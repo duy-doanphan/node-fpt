@@ -6,22 +6,35 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected correctly to server');
 
-        return Nations.deleteMany({});
-    })
-    .then(() => {
-        const newNation = new Nations({
+        return Nations.create({
             name: 'Qatar',
+            description: 'Home Team'
         });
-
-        return newNation.save();
     })
     .then((nation) => {
         console.log(nation);
 
-        return Nations.find({}).exec();
+        return Nations.findByIdAndUpdate(
+            nation._id,
+            {
+                $set: { description: 'WC 2022' }
+            },
+            { new: true }
+        ).exec();
     })
-    .then((nations) => {
-        console.log(nations);
+    .then((nation) => {
+        console.log(nation);
+
+        nation.comments.push({
+            rating: 5,
+            comment: 'Please give me beer!',
+            author: 'Hacker'
+        });
+
+        return nation.save();
+    })
+    .then((nation) => {
+        console.log(nation);
 
         return Nations.deleteMany({});
     })
