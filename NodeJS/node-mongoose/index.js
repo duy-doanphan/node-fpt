@@ -29,5 +29,26 @@ connect.then((db) => {
         .catch((err) => {
             console.log(err);
         });
+    Nations.create({
+        name: 'Qatar',
+        description: 'Home Team'
+    })
+        .then((nation) => {
+            console.log(nation);
+
+            return Nations.find({}).exec();
+        })
+        .then((nations) => {
+            console.log(nations);
+
+            return Nations.deleteOne({});
+        })
+        .then(() => {
+            return mongoose.connection.close();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
 
 });
